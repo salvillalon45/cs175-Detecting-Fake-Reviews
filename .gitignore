@@ -1,0 +1,7 @@
+notes.txt
+/build
+/.idea
+/.gradle
+/logs
+config.yaml
+db_scripts
