@@ -68,15 +68,28 @@ for file_name in files_in_directory_positive_polarity:
     reviews.append(review)
 
 
-print(reviews)
-print(scores)
-
-
+# print(reviews)
+# print(scores)
 
 vectorizer = CountVectorizer(ngram_range=(1,2), stop_words="english", min_df=0.01)
 
 # create a sparse BOW array from 'text' using vectorizer
-X = vectorizer.fit_transform(text)
+X = vectorizer.fit_transform(reviews)
 
 # an alternative above would be to use TfIDF rather than counts - which is very simple to do (but not needed here)
 print('Data shape: ', X.shape)
+
+print(X)
+
+corpus = [
+    'This is the first document.',
+    'This document is the second document.',
+    'And this is the third one.',
+     'Is this the first document?',
+]
+
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(corpus)
+print(X)
+print(X.toarray())
+
