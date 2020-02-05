@@ -89,7 +89,7 @@ def create_bow_from_reviews(reviews, scores):
     X = vectorizer.fit_transform(reviews)
     
     
-
-reviews,scores = create_reviews_scores_arrays()
-print(reviews)
-print(scores)
+if __name__ == '__main__':
+    reviews,scores = create_reviews_scores_arrays()
+    print(reviews)
+    print(scores)
