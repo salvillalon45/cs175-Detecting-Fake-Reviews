@@ -22,4 +22,7 @@ if __name__ == '__main__':
     print('Running Program')
     # get BOW and ground truth from functions.py
     X, Y = functions.create_reviews_scores_arrays()
-    logisticRegression(X,Y)
+    X = functions.create_bow_from_reviews(X, Y)
+    # print(X)
+    logisticRegression(X, Y)
+    naiveBayes(X, Y)
