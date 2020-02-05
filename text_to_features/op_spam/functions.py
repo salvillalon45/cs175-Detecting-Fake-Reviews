@@ -87,9 +87,10 @@ def create_bow_from_reviews(reviews, scores):
     
     # create a sparse BOW array from 'text' using vectorizer
     X = vectorizer.fit_transform(reviews)
+    return X
     
     
-
-reviews,scores = create_reviews_scores_arrays()
-print(reviews)
-print(scores)
+if __name__ == '__main__':
+    reviews,scores = create_reviews_scores_arrays()
+    print(reviews)
+    print(scores)
