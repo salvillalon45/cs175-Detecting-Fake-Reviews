@@ -1,4 +1,19 @@
 import os
+import nltk
+from nltk import word_tokenize
+from nltk.corpus import stopwords
+
+import json as simplejson
+import sklearn
+from sklearn.feature_extraction.text import *
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import auc, roc_auc_score
+
+from sklearn import linear_model
+from sklearn import metrics
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 reviews = list()
 scores = list()
@@ -55,3 +70,13 @@ for file_name in files_in_directory_positive_polarity:
 
 print(reviews)
 print(scores)
+
+
+
+vectorizer = CountVectorizer(ngram_range=(1,2), stop_words="english", min_df=0.01)
+
+# create a sparse BOW array from 'text' using vectorizer
+X = vectorizer.fit_transform(text)
+
+# an alternative above would be to use TfIDF rather than counts - which is very simple to do (but not needed here)
+print('Data shape: ', X.shape)
