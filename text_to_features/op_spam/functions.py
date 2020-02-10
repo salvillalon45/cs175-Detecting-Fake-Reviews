@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 
 import json as simplejson
 import sklearn
-from sklearn.feature_extraction.text import *
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import auc, roc_auc_score
 
@@ -14,6 +14,8 @@ from sklearn import metrics
 
 import numpy as np
 import matplotlib.pyplot as plt
+
+test_flag = 0
 
 
 def create_reviews_scores_arrays():
@@ -30,19 +32,19 @@ def create_reviews_scores_arrays():
     # Loop over the files in negative_polarity directory
     # Open the file line by line
     for file_name in files_in_directory_negative_polarity:
-        print("The file is:: ", file_name)
-        print("File flag:: ", file_name[0])
+        # print("The file is:: ", file_name)
+        # print("File flag:: ", file_name[0])
         
         file_flag = file_name[0]
         file_path = file_path_negative_polarity + file_name
         file_open = open(file_path)
         review = file_open.readline()
         
-        print("The Review is:: ")
-        print(review)
-        print(" ")
-        print("The File Flag is:: ")
-        print(file_flag)
+        # print("The Review is:: ")
+        # print(review)
+        # print(" ")
+        # print("The File Flag is:: ")
+        # print(file_flag)
         
         if file_flag == "d":
             scores.append(0)
@@ -59,16 +61,16 @@ def create_reviews_scores_arrays():
     # Loop over the files in positive_polarity directory
     # Open the file line by line
     for file_name in files_in_directory_positive_polarity:
-        print("The file is:: ", file_name)
-        print("File flag:: ", file_name[0])
+        # print("The file is:: ", file_name)
+        # print("File flag:: ", file_name[0])
         
         file_flag = file_name[0]
         file_path = file_path_positive_polarity + file_name
         file_open = open(file_path)
         review = file_open.readline()
 
-        print("The Review is:: ")
-        print(review)
+        # print("The Review is:: ")
+        # print(review)
 
         if file_flag == "d":
             scores.append(0)
@@ -88,7 +90,29 @@ def create_bow_from_reviews(reviews, scores):
     # create a sparse BOW array from 'text' using vectorizer
     X = vectorizer.fit_transform(reviews)
     return X
+
+
+def train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train):
+    train_predictions = classifier.predict(X_train)
+    train_accuracy = metrics.accuracy_score(Y_train, train_predictions)
     
+    class_probabilities_train = classifier.predict_proba(X_train)
+    train_auc_score = metrics.roc_auc_score(Y_train, class_probabilities_train[:, 1])
+    
+    print("Training: ")
+    print(" Accuracy: ", format(100 * train_accuracy, ".2f"))
+    print(" AUC Value: ", format(100 * train_auc_score, ".2f"))
+
+
+def train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test):
+    print("\nTesting: ")
+    test_predictions = classifier.predict(X_test)
+    test_accuracy = metrics.accuracy_score(Y_test, test_predictions)
+    print(" Accuracy: ", format(100 * test_accuracy, ".2f"))
+    
+    class_probabilities = classifier.predict_proba(X_test)
+    test_auc_score = metrics.roc_auc_score(Y_test, class_probabilities[:, 1])
+    print(" AUC Values: ", format(100 * test_auc_score, ".2f"))
     
 if __name__ == '__main__':
     reviews,scores = create_reviews_scores_arrays()
