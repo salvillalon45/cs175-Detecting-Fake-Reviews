@@ -25,6 +25,7 @@ yelp_nyc_path = 'YelpNYC/'
 yelp_zip_path = 'YelpZip/'
 
 
+
 # Simple class to store metadata information
 class YelpMetadata:
     def __init__(self, date, review_id, reviewer_id, product_id, label):
@@ -40,6 +41,8 @@ class YelpReview:
     def __init__(self, text: str, metadata: YelpMetadata):
         self.text = text
         self.metadata = metadata
+
+
 
 
 def get_yelp_chi_hotel_reviews():
