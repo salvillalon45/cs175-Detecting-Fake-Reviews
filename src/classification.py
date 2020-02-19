@@ -73,10 +73,15 @@ if __name__ == '__main__':
     print('Running Program')
     print('------------------------------------------')
     # get BOW and ground truth from functions.py
-    X, Y = functions.create_reviews_scores_arrays()
-    X = functions.create_bow_from_reviews(X, Y)
+    #X, Y = functions.create_reviews_scores_arrays()
+    #X = functions.create_bow_from_reviews(X, Y)
     
+    X, Y = yelp_parser.get_chi_hotel_review_score_list()
+#    print(X)
+#    print(Y)
+    X = functions.create_bow_from_reviews(X, Y)
+
     logisticRegression(X, Y)
     naiveBayes(X, Y)
-    kNearestNeighbors(X,Y)
-    decisionTrees(X, Y)
+    #kNearestNeighbors(X, Y)
+    #decisionTrees(X, Y)
