@@ -16,7 +16,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-DEBUG = True
+DEBUG = False
 
 
 yelp_dataset_path = '../../datasets/yelp/'
@@ -76,16 +76,17 @@ def get_yelp_chi_hotel_reviews():
         hotelMetadata   = hotelMetadataList[i]
         hotelReviewText = hotelReviewsList[i]
         yelpReview      = YelpReview(hotelReviewText, hotelMetadata)
-        # if DEBUG:
-        #     print('-------------------------------------------------------------------------------')
-        #     print('Review [{i}]'.format(i=i))
-        #     print(' * Metadata:')
-        #     print('    - Date:        {x}'.format(x=yelpReview.metadata.date))
-        #     print('    - Review ID:   {x}'.format(x=yelpReview.metadata.review_id))
-        #     print('    - Reviewer ID: {x}'.format(x=yelpReview.metadata.reviewer_id))
-        #     print('    - Product ID:  {x}'.format(x=yelpReview.metadata.product_id))
-        #     print('    - Label:       {x}\n'.format(x=yelpReview.metadata.label))
-        #     print('\nReview Text: {}\n\n\n'.format(yelpReview.text))
+        hotel_data.append(yelpReview)
+        if DEBUG:
+            print('-------------------------------------------------------------------------------')
+            print('Review [{i}]'.format(i=i))
+            print(' * Metadata:')
+            print('    - Date:        {x}'.format(x=yelpReview.metadata.date))
+            print('    - Review ID:   {x}'.format(x=yelpReview.metadata.review_id))
+            print('    - Reviewer ID: {x}'.format(x=yelpReview.metadata.reviewer_id))
+            print('    - Product ID:  {x}'.format(x=yelpReview.metadata.product_id))
+            print('    - Label:       {x}\n'.format(x=yelpReview.metadata.label))
+            print('\nReview Text: {}\n\n\n'.format(yelpReview.text))
 
     return hotel_data
 
@@ -120,6 +121,7 @@ def get_yelp_chi_restaurant_reviews():
         restaurantMetadata   = restaurantMetadataList[i]
         restaurantReviewText = restaurantReviewsList[i]
         yelpReview           = YelpReview(restaurantReviewText, restaurantMetadata)
+        restaurant_data.append(yelpReview)
         if DEBUG:
             print('-------------------------------------------------------------------------------')
             print('Review [{i}]'.format(i=i))
@@ -137,6 +139,30 @@ def get_yelp_nyc_reviews():
     pass
 
 
+
+def get_review_score_list_representation(review_list):
+    reviews = []
+    scores  = []
+    
+    for yelp_review in review_list:
+        reviews.append(yelp_review.text)
+        
+        if yelp_review.metadata.label == 'd':
+            scores.append(0)
+        else:
+            scores.append(1)
+        
+        #scores.append(yelp_review.metadata.label)
+    return reviews, scores
+    
+
 if __name__ == '__main__':
-    chi_hotel_reviews = get_yelp_chi_hotel_reviews()
-    chi_restaurant_reviews = get_yelp_chi_restaurant_reviews()
+    chi_hotel_yelp_reviews = get_yelp_chi_hotel_reviews()
+    chi_restaurant_yelp_reviews = get_yelp_chi_restaurant_reviews()
+    chi_hotel_yelp_reviews, chi_hotel_scores = get_review_score_list_representation(chi_hotel_yelp_reviews)
+    
+    print(chi_hotel_yelp_reviews)
+    print(chi_hotel_scores)
+    #print(chi_hotel_reviews)
+    #print(chi_restaurant_reviews)
+    

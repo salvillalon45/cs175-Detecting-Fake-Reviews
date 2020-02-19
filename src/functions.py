@@ -21,7 +21,7 @@ test_flag = 0
 def create_reviews_scores_arrays():
     # This function uses the op_spam dataset and extracts the reviews and the flag from the file name
     # This is needed so that we can do vectorization. We plan on using CountVectorization
-
+    
     reviews = list()
     scores = list()
     # negative_polarity directory
@@ -115,6 +115,6 @@ def train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y
     print(" AUC Values: ", format(100 * test_auc_score, ".2f"))
     
 if __name__ == '__main__':
-    reviews,scores = create_reviews_scores_arrays()
+    reviews, scores = create_reviews_scores_arrays()
     print(reviews)
     print(scores)

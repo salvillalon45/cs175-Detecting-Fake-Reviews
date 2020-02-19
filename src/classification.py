@@ -7,6 +7,7 @@ from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
 
 import functions
+import yelp_parser
 
 def logisticRegression(X, Y, test_fraction=0.25):
     print(" ")
@@ -54,6 +55,7 @@ def decisionTrees(X, Y, test_fraction=0.25):
     
     functions.train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train)
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
+    
     
 def randomForest(X, Y, test_fraction=0.25):
     print(" ")
