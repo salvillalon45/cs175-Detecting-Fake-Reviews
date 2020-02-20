@@ -80,3 +80,4 @@ if __name__ == '__main__':
     naiveBayes(X, Y)
     kNearestNeighbors(X,Y)
     decisionTrees(X, Y)
+    
