@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 DEBUG = False
 
 
-yelp_dataset_path = '../../datasets/yelp/'
+yelp_dataset_path = '../datasets/yelp/'
 yelp_chi_path = 'YelpChi/'
 yelp_nyc_path = 'YelpNYC/'
 yelp_zip_path = 'YelpZip/'
@@ -140,11 +140,14 @@ def get_yelp_nyc_reviews():
 
 
 
-def get_review_score_list_representation(review_list):
+def get_chi_hotel_review_score_list():
+    chi_hotel_yelp_reviews = get_yelp_chi_hotel_reviews()
+    chi_restaurant_yelp_reviews = get_yelp_chi_restaurant_reviews()
+    chi_yelp_reviews = chi_hotel_yelp_reviews + chi_restaurant_yelp_reviews
     reviews = []
     scores  = []
     
-    for yelp_review in review_list:
+    for yelp_review in chi_yelp_reviews:
         reviews.append(yelp_review.text)
         
         if yelp_review.metadata.label == 'd':
@@ -152,17 +155,15 @@ def get_review_score_list_representation(review_list):
         else:
             scores.append(1)
         
-        #scores.append(yelp_review.metadata.label)
+#        scores.append(yelp_review.metadata.label)
     return reviews, scores
     
 
-if __name__ == '__main__':
-    chi_hotel_yelp_reviews = get_yelp_chi_hotel_reviews()
-    chi_restaurant_yelp_reviews = get_yelp_chi_restaurant_reviews()
-    chi_hotel_yelp_reviews, chi_hotel_scores = get_review_score_list_representation(chi_hotel_yelp_reviews)
-    
-    print(chi_hotel_yelp_reviews)
-    print(chi_hotel_scores)
-    #print(chi_hotel_reviews)
-    #print(chi_restaurant_reviews)
+#if __name__ == '__main__':
+##    chi_hotel_yelp_reviews, chi_hotel_scores = get_review_score_list_representation(chi_hotel_yelp_reviews)
+##
+##    print(chi_hotel_yelp_reviews)
+##    print(chi_hotel_scores)
+#    #print(chi_hotel_reviews)
+#    #print(chi_restaurant_reviews)
     
