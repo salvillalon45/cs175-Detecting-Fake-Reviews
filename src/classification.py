@@ -20,6 +20,7 @@ def logisticRegression(X, Y, test_fraction=0.25):
     functions.train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train)
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
 
+    return classifier
 
 def naiveBayes(X, Y, test_fraction=0.25):
     print(" ")
@@ -32,6 +33,7 @@ def naiveBayes(X, Y, test_fraction=0.25):
     functions.train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train)
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
 
+    return classifier
 
 def kNearestNeighbors(X, Y, test_fraction=0.25):
     print(" ")
@@ -44,6 +46,7 @@ def kNearestNeighbors(X, Y, test_fraction=0.25):
     functions.train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train)
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
 
+    return classifier
 
 def decisionTrees(X, Y, test_fraction=0.25):
     print(" ")
@@ -56,6 +59,7 @@ def decisionTrees(X, Y, test_fraction=0.25):
     functions.train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train)
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
 
+    return classifier
 
 def randomForest(X, Y, test_fraction=0.25):
     print(" ")
@@ -68,11 +72,25 @@ def randomForest(X, Y, test_fraction=0.25):
     functions.train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train)
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
 
+    return classifier
 
 if __name__ == '__main__':
     print('Running Program')
     print('------------------------------------------')
     # get BOW and ground truth from functions.py
+    X, Y = functions.create_reviews_scores_arrays()
+    X, vectorizer = functions.create_bow_from_reviews(X, Y)
+
+
+#     X, Y = yelp_parser.get_chi_hotel_review_score_list()
+# #    print(X)
+# #    print(Y)
+#     X = functions.create_bow_from_reviews(X, Y)c
+
+    classifier = logisticRegression(X, Y)
+    functions.most_significant_terms(classifier, vectorizer, K=10)
+    # naiveBayes(X, Y)
+
     #X, Y = functions.create_reviews_scores_arrays()
     #X = functions.create_bow_from_reviews(X, Y)
 
