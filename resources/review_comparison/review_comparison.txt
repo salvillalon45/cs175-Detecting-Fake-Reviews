@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------------------------------------------------------
 Positive Reviews
 
+Review 1 on Google Form
 t_hilton_1.txt
 truthful positive review from TripAdvisor
 ---------------------------------------------------------------
@@ -12,6 +13,7 @@ The internet access (WiFi) is charged, 13 dollars/day. Pros: Low rate price, hug
 close to attractions at Loop, close to metro station. Cons: Expensive breakfast, Internet access charged.
 Tip: When leaving the building, always use the Michigan Av exit. Its a great view.
 
+Review 2 on Google Form
 d_hilton_1.txt
 deceptive positive reviews from Mechanical Turk
 ---------------------------------------------------------------
@@ -25,6 +27,7 @@ I would recommend staying here to anyone.
 ------------------------------------------------------------------------------------------------------------------------------
 Negative Reviews
 
+Review 3 on Google Form
 t_hilton_20.txt
 truthful negative review from Expedia, Hotels.com, Orbitz, Priceline, TripAdvisor and Yelp
 ---------------------------------------------------------------
@@ -38,6 +41,7 @@ reply from the hotel. Considering the price point of this downtown hotel I would
 he 5 star rating but instead they have failed miserably. Luckily there are many hotels to choose from in downtown Chicago.
 
 
+Review 4 on Google Form
 d_hilton_20.txt
 deceptive negative reviews from Mechanical Turk
 ---------------------------------------------------------------
