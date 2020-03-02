@@ -10,6 +10,7 @@
 web_application/frontend/node_modules/node_modules
 web_application/frontend/node_modules/.pnp
 web_application/frontend/node_modules.pnp.js
+web_application/backend/virtual
 
 # testing
 web_application/frontend/node_modules/coverage
