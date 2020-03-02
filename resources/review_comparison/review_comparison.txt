@@ -1,0 +1,57 @@
+------------------------------------------------------------------------------------------------------------------------------
+Positive Reviews
+
+Review 1 on Google Form
+t_hilton_1.txt
+truthful positive review from TripAdvisor
+---------------------------------------------------------------
+We stay at Hilton for 4 nights last march. It was a pleasant stay. We got a large room with 2 double beds and 2 bathrooms,
+The TV was Ok, a 27' CRT Flat Screen. The coincierge was very friendly when we need.
+The room was very cleaned when we arrived, we ordered some pizzas from room service and the pizza
+was Ok also.The main Hall is beautiful. The breakfast is charged, 20 dollars, kinda expensive.
+The internet access (WiFi) is charged, 13 dollars/day. Pros: Low rate price, huge rooms,
+close to attractions at Loop, close to metro station. Cons: Expensive breakfast, Internet access charged.
+Tip: When leaving the building, always use the Michigan Av exit. Its a great view.
+
+Review 2 on Google Form
+d_hilton_1.txt
+deceptive positive reviews from Mechanical Turk
+---------------------------------------------------------------
+My husband and I satayed for two nights at the Hilton Chicago,and enjoyed every minute of it!
+The bedrooms are immaculate,and the linnens are very soft. We also appreciated the free wifi,as we could stay in
+touch with friends while staying in Chicago. The bathroom was quite spacious,and I loved the smell of the shampoo
+they provided-not like most hotel shampoos. Their service was amazing,and we absolutely loved the beautiful indoor pool.
+I would recommend staying here to anyone.
+
+
+------------------------------------------------------------------------------------------------------------------------------
+Negative Reviews
+
+Review 3 on Google Form
+t_hilton_20.txt
+truthful negative review from Expedia, Hotels.com, Orbitz, Priceline, TripAdvisor and Yelp
+---------------------------------------------------------------
+I recently stayed here for the Chicago triathlon. This was my third stay at this hotel. I have not had any issues until
+this visit. After the 3rd day of my stay I requested my room to be serviced and returned to what I thought was a clean room.
+While getting out of bed I was cut by a piece of glass in the carpet. I must not have been the first person to be cut in
+the room because I found dried blood on the bathroom floor afterwards. I had not noticed it before so I was very disgusted.
+We notified the staff and asked that the room be vacuumed and the bathroom mopped. We returned to the room after 5pm to
+find that the dried blood was still on the floor. After making a complaint to the customer service I have gotten no
+reply from the hotel. Considering the price point of this downtown hotel I would think that they would try to live up t
+he 5 star rating but instead they have failed miserably. Luckily there are many hotels to choose from in downtown Chicago.
+
+
+Review 4 on Google Form
+d_hilton_20.txt
+deceptive negative reviews from Mechanical Turk
+---------------------------------------------------------------
+The Hilton Chicago, located on prime real estate in downtown Chicago, has not aged as
+gracefully as other hotels around the country opened during the same period of time.
+The hotel does maintain the appearance of luxury that has made it iconic, but that luxury is
+not in accord with 21st century standards. Lacking any form of fitness center, the Hilton is
+almost alone among the major hotels of Chicago in forcing its patrons to go elsewhere for a
+quick workout. Even nominal fees for wireless internet use in hotel rooms is very rare at this
+point, and the outrageous parking fee of $43 for guests will discourage out of towners from making
+the Hilton their destination. Most guest rooms are no different than any other Hilton anywhere, meaning
+that unless you are staying in the admittedly fantastic Executive suites, you will be paying a premium for a prosaic hotel experience.
+
