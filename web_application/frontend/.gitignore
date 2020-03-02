@@ -1,21 +1,15 @@
-/venv
-/datasets
-/.idea
-
-
-
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-web_application/frontend/node_modules/node_modules
-web_application/frontend/node_modules/.pnp
-web_application/frontend/node_modules.pnp.js
+/node_modules
+/.pnp
+.pnp.js
 
 # testing
-web_application/frontend/node_modules/coverage
+/coverage
 
 # production
-web_application/frontend/node_modules/build
+/build
 
 # misc
 .DS_Store

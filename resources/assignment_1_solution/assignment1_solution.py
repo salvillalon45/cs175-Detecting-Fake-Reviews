@@ -1,5 +1,4 @@
 
-
 # ---------------------------------------------------------------------------------------
 # THIS VERSION OF THE CODE CONTAINS THE SOLUTION CODE TO THE ASSIGNMENT 
 
@@ -57,7 +56,7 @@ import matplotlib.pyplot as plt
 #
 # NOTE: please read Section 3 of Chapter 1 in the NLTK online book to understand how to use the FreqDist method 
 # ---------------------------------------------------------------------------------------
-def letter_percentage(text,letter):
+def letter_percentage(text ,letter):
 	"""
 	Parameters:
 	text: string
@@ -76,14 +75,14 @@ def letter_percentage(text,letter):
 
      # create an fdist object for the list of lower case characters
 	fdist = nltk.FreqDist(charlist)
- 
+
      # calculate the frequency of the specific character "letter"
 	frequency = fdist.freq(letter)
  
      # convert the frequency to a percentage
-	character_percent = 100*frequency
+	character_percent = 100 *frequency
 	p = '{0:.2f}'.format(character_percent)
-	print('\nPercentage = ',p,' of characters match the character',letter)
+	print('\nPercentage = ' ,p ,' of characters match the character' ,letter)
 	return character_percent
 
 
@@ -124,11 +123,11 @@ def parts_of_speech(s):
 	tokens = nltk.word_tokenize(s)
 	
     # extract POS tags using the universal tagset with the NLTK POS tagger
-	tokens_and_tags = nltk.pos_tag(tokens,'universal')
+	tokens_and_tags = nltk.pos_tag(tokens ,'universal')
 		
 	# Compute and print the total number of tokens  
 	n = len(tokens_and_tags)
-	print('Total number of tokens is',n)
+	print('Total number of tokens is' ,n)
 	
 	# extract the 2nd item from tokens_and_tags from each sublist
 	# where item[1] is the 2nd item on each sublist
@@ -142,9 +141,9 @@ def parts_of_speech(s):
 	
      # print out each tag and the percentage of tokens associated with it, in descending order 
 	for item in sorted_tag_counts:
-		tag_percent = 100 * item[1]/n
+		tag_percent = 100 * item[1 ] /n
 		p = '{0:.2f}'.format(tag_percent)
-		print('Tag:',item[0],'\t   Percentage of tokens = ', p )
+		print('Tag:' ,item[0] ,'\t   Percentage of tokens = ', p )
   
 	return( tokens_and_tags  )
 	
@@ -157,20 +156,20 @@ def parts_of_speech(s):
 # - extracts the text of the kth review
 # - runs the parts_of_speech function (Problem 2) to compute the percentages of tokens for each part of speech
 # ---------------------------------------------------------------------------------------
-def review_pos(k,filename): 
+def review_pos(k ,filename):
 	
-	#print('\nLoading the file: review_subset.json\n') 
-	#name = 'review_subset.json'  # load data
+	# print('\nLoading the file: review_subset.json\n')
+	# name = 'review_subset.json'  # load data
 	print('\nLoading the file: \n', filename) 
 	with open(filename, 'r') as jfile:
 		data = json.load(jfile)
 	print('\nTotal number of reviews extracted =', len(data) )
  
-	print('\nComputing the percentages for each part-of-speech for review',k)
+	print('\nComputing the percentages for each part-of-speech for review' ,k)
 	
-	d = data[k-1]  # extract the kth review (indexed from 0)
+	d = data[ k -1]  # extract the kth review (indexed from 0)
 	s = d['text']  # extract text string associated with kth review
-	print('Text from review ',k, ' is:')
+	print('Text from review ' ,k, ' is:')
 	print(s)
 	parts_of_speech(s)
 		
@@ -224,7 +223,7 @@ def create_bow_from_reviews(filename, min_pos=4, max_neg=2):
     # (1) the standard 'english' stopword set 
     # (2) only keeping terms in the vocabulary that occur in at least 1% of documents
     # (3) allowing both unigrams and bigrams in the vocabulary (use "ngram_range=(1,2)" to do this)
-	vectorizer = CountVectorizer(stop_words='english',min_df=0.01,ngram_range=(1,2))   
+	vectorizer = CountVectorizer(stop_words='english' ,min_df=0.01 ,ngram_range=(1 ,2))
 	X = vectorizer.fit_transform(text)
 	
 	# an alternative above would be to use TfIDF rather than counts - which is very simple to do:
@@ -233,7 +232,7 @@ def create_bow_from_reviews(filename, min_pos=4, max_neg=2):
 	print('Data shape: ', X.shape)
 	
 	# you can uncomment this next line if you want to see the full list of tokens in the vocabulary  
-	#print('Vocabulary: ', vectorizer.get_feature_names())
+	# print('Vocabulary: ', vectorizer.get_feature_names())
  
 	return X, Y, vectorizer
 		 
@@ -271,20 +270,20 @@ def logistic_classification(X, Y, test_fraction):
 	class_probabilities_train = classifier.predict_proba(X_train)
 	train_auc_score = metrics.roc_auc_score(Y_train, class_probabilities_train[:, 1]);
 	print('\nTraining:')
-	print(' accuracy:',format( 100*train_accuracy , '.2f') ) 
-	print(' AUC value:', format( 100*train_auc_score , '.2f') )
+	print(' accuracy:' ,format( 100 *train_accuracy , '.2f') )
+	print(' AUC value:', format( 100 *train_auc_score , '.2f') )
 
 	# Compute and print accuracy and AUC on the test data
 	print('\nTesting: ')
 	test_predictions = classifier.predict(X_test)	 
 	test_accuracy = metrics.accuracy_score(Y_test, test_predictions) 
-	print(' accuracy:', format( 100*test_accuracy , '.2f') )
+	print(' accuracy:', format( 100 *test_accuracy , '.2f') )
 	
 	class_probabilities = classifier.predict_proba(X_test)
 	test_auc_score = metrics.roc_auc_score(Y_test, class_probabilities[:, 1]);
-	print(' AUC value:', format( 100*test_auc_score , '.2f') )
+	print(' AUC value:', format( 100 *test_auc_score , '.2f') )
 	
-	return(classifier) 
+	return (classifier)
     
 
 # ---------------------------------------------------------------------------------------
@@ -321,9 +320,8 @@ def most_significant_terms(classifier, vectorizer, K):
 	 
 	print('Top K positive weight words:')
 	for w in topK_pos_weights:
-		print('%s : %.4f' % (word_list[w],classifier.coef_[0][w]))
+		print('%s : %.4f' % (word_list[w] ,classifier.coef_[0][w]))
 		
 	print('Top K negative weight words:')
 	for w in topK_neg_weights:
-		print('%s : %.4f' % (word_list[w],classifier.coef_[0][w]))
-	
+		print('%s : %.4f' % (word_list[w] ,classifier.coef_[0][w]))

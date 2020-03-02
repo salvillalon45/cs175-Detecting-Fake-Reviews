@@ -1,0 +1,27 @@
+/* Added padding to bottom and top of the search bar */
+.review-input-field {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.review-input-field p {
+    padding: 10px;
+}
+
+/* Increase the width of the search bar and move it down */
+.review-input-field .form-input  {
+    margin-top: 10px;
+    width: 600px;
+    height: 200px;
+}
+
+/* Added space for the text that describes what the filter are for */
+.movie-filters-description {
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+/* Increase the width of the FabFlix Home Button */
+.review-input-button .form-button {
+    width: 250px;
+}

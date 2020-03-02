@@ -9,6 +9,7 @@ from sklearn.ensemble import RandomForestClassifier
 import functions
 import yelp_parser
 
+
 def logisticRegression(X, Y, test_fraction=0.25):
     print(" ")
     print("Logistic Regression Test")
@@ -77,7 +78,7 @@ def randomForest(X, Y, test_fraction=0.25):
 if __name__ == '__main__':
     print('Running Program')
     print('------------------------------------------')
-    # get BOW and ground truth from functions.py
+    # get BOW and ground truth from utils.py
     X, Y = functions.create_reviews_scores_arrays()
     X, vectorizer = functions.create_bow_from_reviews(X, Y)
 
@@ -85,14 +86,14 @@ if __name__ == '__main__':
 #     X, Y = yelp_parser.get_chi_hotel_review_score_list()
 # #    print(X)
 # #    print(Y)
-#     X = functions.create_bow_from_reviews(X, Y)c
+#     X = utils.create_bow_from_reviews(X, Y)c
 
     classifier = logisticRegression(X, Y)
     functions.most_significant_terms(classifier, vectorizer, K=10)
     # naiveBayes(X, Y)
 
-    #X, Y = functions.create_reviews_scores_arrays()
-    #X = functions.create_bow_from_reviews(X, Y)
+    #X, Y = utils.create_reviews_scores_arrays()
+    #X = utils.create_bow_from_reviews(X, Y)
 
     X, Y = yelp_parser.get_chi_hotel_review_score_list()
 #    print(X)

@@ -24,27 +24,21 @@ def create_reviews_scores_arrays():
 
     reviews = list()
     scores = list()
+    length_of_review = list()
+
     # negative_polarity directory
     # ---------------------------------------------------------
-    files_in_directory_negative_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
+    files_in_directory_negative_polarity = os.listdir("/../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
     file_path_negative_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/"
 
     # Loop over the files in negative_polarity directory
     # Open the file line by line
     for file_name in files_in_directory_negative_polarity:
-        # print("The file is:: ", file_name)
-        # print("File flag:: ", file_name[0])
 
         file_flag = file_name[0]
         file_path = file_path_negative_polarity + file_name
         file_open = open(file_path)
         review = file_open.readline()
-
-        # print("The Review is:: ")
-        # print(review)
-        # print(" ")
-        # print("The File Flag is:: ")
-        # print(file_flag)
 
         if file_flag == "d":
             scores.append(0)
@@ -52,6 +46,7 @@ def create_reviews_scores_arrays():
             scores.append(1)
 
         reviews.append(review)
+        length_of_review.append(len(review))
 
     # positive_polarity directory
     # ---------------------------------------------------------
@@ -61,16 +56,11 @@ def create_reviews_scores_arrays():
     # Loop over the files in positive_polarity directory
     # Open the file line by line
     for file_name in files_in_directory_positive_polarity:
-        # print("The file is:: ", file_name)
-        # print("File flag:: ", file_name[0])
 
         file_flag = file_name[0]
         file_path = file_path_positive_polarity + file_name
         file_open = open(file_path)
         review = file_open.readline()
-
-        # print("The Review is:: ")
-        # print(review)
 
         if file_flag == "d":
             scores.append(0)
@@ -78,6 +68,7 @@ def create_reviews_scores_arrays():
             scores.append(1)
 
         reviews.append(review)
+        length_of_review.append(len(review))
 
     return reviews, scores
 
@@ -89,6 +80,7 @@ def create_bow_from_reviews(reviews, scores):
 
     # create a sparse BOW array from 'text' using vectorizer
     X = vectorizer.fit_transform(reviews)
+    print(X)
     return X, vectorizer
 
 
