@@ -1,0 +1,6 @@
+{
+  "baseUrl": "http://localhost:1795/api",
+  "moviesEPs": {
+    "searchEP": "movies/search"
+  }
+}

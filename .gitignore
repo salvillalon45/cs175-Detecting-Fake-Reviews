@@ -1,3 +1,37 @@
 /venv
-/datasets
+/src/datasets/dianping_chinese
+/src/datasets/op_spam_v1.4
+/src/datasets/yelp
 /.idea
+/src/__pycache__
+src/op_spam/__pycache__/classification.cpython-37.pyc
+src/op_spam/__pycache__/functions.cpython-37.pyc
+
+
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+web_application/frontend/node_modules/node_modules
+web_application/frontend/node_modules/.pnp
+web_application/frontend/node_modules.pnp.js
+web_application/backend/virtual
+
+# testing
+web_application/frontend/node_modules/coverage
+
+# production
+web_application/frontend/node_modules/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+notes.txt
