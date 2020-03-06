@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 DEBUG = False
 
 
-yelp_dataset_path = '../../datasets/yelp/'
+yelp_dataset_path = '../datasets/yelp/'
 yelp_chi_path = 'YelpChi/'
 yelp_nyc_path = 'YelpNYC/'
 yelp_zip_path = 'YelpZip/'

@@ -3,7 +3,7 @@ import csv
 
 def read_chinese():
     print('Reading Chinese')
-    file_name = '../../datasets/data-hauyi/ICDM_REVIEWS_TO_RELEASE_encoding=utf-8.csv'
+    file_name = '../datasets/data-hauyi/ICDM_REVIEWS_TO_RELEASE_encoding=utf-8.csv'
     reader = csv.reader(file_name, delimiter=',')
     # for row in reader:
     #     print(row)
