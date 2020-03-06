@@ -1,16 +1,21 @@
-# Functions to create various text classification models
+# --------------------------------------------------------------------------------------
+#
+# Name: src/op_spam/classification.py
+# Description:
+# This file has the sklearn implmentation of the following classifiers: logistic regression,
+# naive bayes, K nearest neighbor, decision trees, and random forests
+#
+# --------------------------------------------------------------------------------------
 from sklearn.model_selection import train_test_split
 from sklearn import linear_model
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
-
 import functions
-import yelp_parser
 
 
-def logisticRegression(X, Y, test_fraction=0.25):
+def logistic_regression(X, Y, test_fraction=0.25):
     print(" ")
     print("Logistic Regression Test")
     print("-------------------------------------------------")
@@ -23,7 +28,8 @@ def logisticRegression(X, Y, test_fraction=0.25):
 
     return classifier
 
-def naiveBayes(X, Y, test_fraction=0.25):
+
+def naive_bayes(X, Y, test_fraction=0.25):
     print(" ")
     print("Naive Bayes Test")
     print("-------------------------------------------------")
@@ -36,7 +42,8 @@ def naiveBayes(X, Y, test_fraction=0.25):
 
     return classifier
 
-def kNearestNeighbors(X, Y, test_fraction=0.25):
+
+def knearest_neighbors(X, Y, test_fraction=0.25):
     print(" ")
     print("K Nearest Neighbors Test")
     print("-------------------------------------------------")
@@ -49,7 +56,8 @@ def kNearestNeighbors(X, Y, test_fraction=0.25):
 
     return classifier
 
-def decisionTrees(X, Y, test_fraction=0.25):
+
+def decision_trees(X, Y, test_fraction=0.25):
     print(" ")
     print("Decision Trees Test")
     print("-------------------------------------------------")
@@ -62,7 +70,8 @@ def decisionTrees(X, Y, test_fraction=0.25):
 
     return classifier
 
-def randomForest(X, Y, test_fraction=0.25):
+
+def random_forest(X, Y, test_fraction=0.25):
     print(" ")
     print("Decision Trees Test")
     print("-------------------------------------------------")
@@ -75,32 +84,4 @@ def randomForest(X, Y, test_fraction=0.25):
 
     return classifier
 
-if __name__ == '__main__':
-    print('Running Program')
-    print('------------------------------------------')
-    # get BOW and ground truth from utils.py
-    X, Y = functions.create_reviews_scores_arrays()
-    X, vectorizer = functions.create_bow_from_reviews(X, Y)
 
-
-#     X, Y = yelp_parser.get_chi_hotel_review_score_list()
-# #    print(X)
-# #    print(Y)
-#     X = utils.create_bow_from_reviews(X, Y)c
-
-    classifier = logisticRegression(X, Y)
-    functions.most_significant_terms(classifier, vectorizer, K=10)
-    # naiveBayes(X, Y)
-
-    #X, Y = utils.create_reviews_scores_arrays()
-    #X = utils.create_bow_from_reviews(X, Y)
-
-    X, Y = yelp_parser.get_chi_hotel_review_score_list()
-#    print(X)
-#    print(Y)
-    X = functions.create_bow_from_reviews(X, Y)
-
-    logisticRegression(X, Y)
-    naiveBayes(X, Y)
-    #kNearestNeighbors(X, Y)
-    #decisionTrees(X, Y)
