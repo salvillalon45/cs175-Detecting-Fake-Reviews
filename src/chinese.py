@@ -4,11 +4,12 @@ from nltk.tokenize.stanford_segmenter import StanfordSegmenter
 import os
 import functions
 from sklearn.feature_extraction.text import CountVectorizer
-
+import classification
 
 def read_chinese():
     print('Reading Chinese')
-    file_name = '../datasets/data-hauyi/ICDM_REVIEWS_TO_RELEASE_encoding=utf-8.csv'
+    # file_name = '../datasets/data-hauyi/ICDM_REVIEWS_TO_RELEASE_encoding=utf-8.csv'
+    file_name = '../datasets/data-hauyi/reviews.txt'
 
     # reader = csv.reader(file_name, delimiter=',')
     # for row in reader:
@@ -28,20 +29,28 @@ def read_chinese():
         if count == 1:
             continue
 
-        line = line.split(',', maxsplit=5) # max split equals 5 so as to not split
+        # line = line.split(',', maxsplit=5) # max split equals 5 so as to not split
+        line = line.split(' ', maxsplit=1) # max split equals 5 so as to not split
+
         # print(line)
-        label = line[1]
-        review = line[5]
+        # label = line[1]
+        # review = line[5]
+        label = line[0]
+        review = line[1]
+        # print('label')
+        # print('review')
         # print(label)
         # print(review)
-        if label == '+':
+        # if label == '+':
+        if label == '0':
             labels.append(0)
         else:
             labels.append(1)
         reviews.append(review)
 
-        if count > 5:
+        if count > 9000:
             break
+        print(count)
 
     # print(len(labels), len(reviews))
     # print(labels)
@@ -60,42 +69,63 @@ def segment(labels, reviews):
     seg.default_config('zh',)
     count = 0
 
-    for i in reviews:
-        print(i)
-        s = seg.segment(i)
-        print(s)
+    file_out = open('reviews.txt','a+')
+
+    for i in range(len(reviews)):
+        # print(i)
+        s = seg.segment(reviews[i])
+        l = labels[i]
+        # print(s)
+        line = str(l) + ' ' + s
+        file_out.write(line)
         segmented.append(s)
         # print('Tokenize: ')
         # print(seg.tokenize(s))
         count = count + 1
-        if count > 5:
-            break
+        # if count > 5:
+        #     break
+        print('Count: ', count)
+
+
     
     return(segmented)
 
 def chinese_BOW(reviews):
     # vectorizer = CountVectorizer(ngram_range=(1,2), stop_words="english", min_df=0.01)
-    vectorizer = CountVectorizer()
-    print(reviews)
+    # vectorizer = CountVectorizer()
+    vectorizer = CountVectorizer(ngram_range=(1, 2), min_df=0.01)
+    # print(reviews)
     X = vectorizer.fit_transform(reviews)
     return X, vectorizer
 
 if __name__ == '__main__':
     labels, reviews = read_chinese()
+    print('labels: ', labels)
+    print('len label: ', len(labels))
+    print('reviews: ', reviews)
+    print('len reviews: ', len(reviews))
     # print(labels,reviews)
-    reviews = segment(labels, reviews)
-    print(reviews)
+    # reviews = segment(labels, reviews)
+    # print(reviews)
     BOW, vec = chinese_BOW(reviews)
-    print('BOW: ')
-    print(BOW)
-    print('BOW to array: ')
-    print(BOW.toarray())
-    print('shape: ')
-    print(BOW.shape)
-    print('get feature names')
-    print(vec.get_feature_names())
-    print('get params')
-    print(vec.get_params())
-    print('get stop words')
-    print(vec.get_stop_words())
+    # print('len bow: ', BOW.shape)
+    # print('BOW: ')
+    # print(BOW)
+    # print('BOW to array: ')
+    # print(BOW.toarray())
+    # print('shape: ')
+    # print(BOW.shape)
+    # print('get feature names')
+    # print(vec.get_feature_names())
+    # print('get params')
+    # print(vec.get_params())
+    # print('get stop words')
+    # print(vec.get_stop_words())
+    classification.naiveBayes(BOW,labels)
+    classification.logisticRegression(BOW,labels)
+    classification.kNearestNeighbors(BOW,labels)
+    classification.decisionTrees(BOW,labels)
+    classification.randomForest(BOW,labels)
+
+
 
