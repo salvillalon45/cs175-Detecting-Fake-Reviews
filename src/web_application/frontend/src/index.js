@@ -3,16 +3,13 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
-import IdmSocket from "./services/sockets/IdmSocket";
-import MoviesSocket from "./services/sockets/MoviesSocket";
+import Socket from "./util/Socket";
 
 import "./css/Home.css";
 import "./css/nav-bar.css";
 import "./css/form.css";
 
-IdmSocket.initSocket();
-MoviesSocket.initSocket();
-
+Socket.initSocket();
 
 /*
   This Function connects Our Main <App> to our HTML file
@@ -21,8 +18,8 @@ MoviesSocket.initSocket();
   also get called.
 */
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
-  document.getElementById("root")
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+    document.getElementById("root")
 );
