@@ -36,7 +36,7 @@ def naive_bayes(X, Y, test_fraction=0.25):
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_fraction, random_state=42)
     classifier = MultinomialNB()
     classifier.fit(X_train, Y_train)
-
+    print('Y TEST: ', Y_test)
     functions.train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train)
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
 
@@ -62,6 +62,7 @@ def decision_trees(X, Y, test_fraction=0.25):
     print("Decision Trees Test")
     print("-------------------------------------------------")
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_fraction, random_state=42)
+
     classifier = tree.DecisionTreeClassifier()
     classifier.fit(X, Y)
 
@@ -83,5 +84,4 @@ def random_forest(X, Y, test_fraction=0.25):
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
 
     return classifier
-
 
