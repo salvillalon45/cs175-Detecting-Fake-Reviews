@@ -12,6 +12,7 @@ from sklearn import metrics
 import numpy as np
 
 
+
 def create_reviews_scores_arrays():
     # This function uses the op_spam dataset and extracts the reviews and the flag from the file name
     # This is needed so that we can do vectorization. We plan on using CountVectorization
