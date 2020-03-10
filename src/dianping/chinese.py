@@ -1,16 +1,28 @@
 # Module to use chinese data
 import csv
 from nltk.tokenize.stanford_segmenter import StanfordSegmenter
-import os
+import os, sys
+sys.path.append('../op_spam')
 import functions
 from sklearn.feature_extraction.text import CountVectorizer
 import classification
+
+def gather_stopwords():
+    print('Gathering stop words')
+    stop_words = []
+    file_name = '../../datasets/data-hauyi/stopwords.txt'
+    for line in open(file_name):
+        line = line.strip()
+        # print(line)
+        stop_words.append(line)
+    print(stop_words)
+    return stop_words
 
 def read_chinese():
     print('Reading Chinese')
 
     # file_name = '../datasets/data-hauyi/ICDM_REVIEWS_TO_RELEASE_encoding=utf-8.csv'
-    file_name = '../datasets/data-hauyi/reviews.txt'
+    file_name = '../../datasets/data-hauyi/reviews.txt'
 
     # reader = csv.reader(file_name, delimiter=',')
 
@@ -92,40 +104,45 @@ def segment(labels, reviews):
     
     return(segmented)
 
-def chinese_BOW(reviews):
+def chinese_BOW(reviews, stop):
     # vectorizer = CountVectorizer(ngram_range=(1,2), stop_words="english", min_df=0.01)
     # vectorizer = CountVectorizer()
-    vectorizer = CountVectorizer(ngram_range=(1, 2), min_df=0.01)
+    vectorizer = CountVectorizer(ngram_range=(1, 2), stop_words=stop, min_df=0.01)
     # print(reviews)
     X = vectorizer.fit_transform(reviews)
     return X, vectorizer
 
+
+
 if __name__ == '__main__':
+    # print('Gathering stopwords')
+    stop = gather_stopwords()
     labels, reviews = read_chinese()
-    print('labels: ', labels)
-    print('len label: ', len(labels))
-    print('reviews: ', reviews)
-    print('len reviews: ', len(reviews))
-    # print(labels,reviews)
-    # reviews = segment(labels, reviews)
-    # print(reviews)
-    BOW, vec = chinese_BOW(reviews)
-    # print('len bow: ', BOW.shape)
-    # print('BOW: ')
-    # print(BOW)
-    # print('BOW to array: ')
-    # print(BOW.toarray())
-    # print('shape: ')
-    # print(BOW.shape)
-    # print('get feature names')
-    # print(vec.get_feature_names())
-    # print('get params')
-    # print(vec.get_params())
-    # print('get stop words')
-    # print(vec.get_stop_words())
-    classification.naiveBayes(BOW,labels)
-    classification.logisticRegression(BOW,labels)
-    classification.kNearestNeighbors(BOW,labels)
-    classification.decisionTrees(BOW,labels)
-    classification.randomForest(BOW,labels)
+    # print('labels: ', labels)
+    # print('len label: ', len(labels))
+    # print('reviews: ', reviews)
+    # print('len reviews: ', len(reviews))
+    # # print(labels,reviews)
+    # # print(reviews)
+    BOW, vec = chinese_BOW(reviews, stop)
+    # # print('len bow: ', BOW.shape)
+    # # print('BOW: ')
+    # # print(BOW)
+    # # print('BOW to array: ')
+    # # print(BOW.toarray())
+    # # print('shape: ')
+    # # print(BOW.shape)
+    # # print('get feature names')
+    # # print(vec.get_feature_names())
+    # # print('get params')
+    # # print(vec.get_params())
+    # # print('get stop words')
+    # # print(vec.get_stop_words())
+    classification.naive_bayes(BOW,labels)
+    logistic = classification.logistic_regression(BOW,labels)
+    classification.knearest_neighbors(BOW,labels)
+    classification.decision_trees(BOW,labels)
+    classification.random_forest(BOW,labels)
+
+    functions.most_significant_terms(logistic, vec, 10)
 
