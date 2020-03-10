@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import "../css/form.css";
 import "../css/Home.css";
+import API from "../services/API";
 
 class Home extends Component {
   state = {
@@ -21,6 +22,13 @@ class Home extends Component {
       event.preventDefault();
 
       const review = this.state.inputReview;
+
+      API.testReview(review)
+          .then(response =>
+              alert(JSON.stringify(response.data, null, 4)))
+          .catch(
+            error => alert(error)
+          );
   };
 
   render() {
@@ -29,6 +37,7 @@ class Home extends Component {
       return (
           <div className="form-box">
               <h1>Test Your Review</h1>
+
               <form onSubmit={this.handleSubmit}>
                   {/* Review Input Field */}
                   <div className="review-input-field">
