@@ -21,7 +21,7 @@ def get_corpus(reviews: [str], scores: [int]):
         yield gensim.models.doc2vec.TaggedDocument(text, [scores[i]])
 
 
-def createDoc2VecModel(reviews, scores):
+def createDoc2VecModel(reviews: [str], scores: [int]):
     corpus = list(get_corpus(reviews, scores))[:20000]
     train_corpus, test_corpus = train_test_split(corpus, test_size=0.25, random_state=42)
     print(len(train_corpus))
