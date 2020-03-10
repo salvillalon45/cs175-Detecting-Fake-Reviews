@@ -73,7 +73,7 @@ def decision_trees(X, Y, test_fraction=0.25):
 
 def random_forest(X, Y, test_fraction=0.25):
     print(" ")
-    print("Decision Trees Test")
+    print("Random Forest Test")
     print("-------------------------------------------------")
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_fraction, random_state=42)
     classifier = RandomForestClassifier(max_depth=2, random_state=0)

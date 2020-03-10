@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 DEBUG = False
 
 
-yelp_dataset_path = '../datasets/yelp/'
+yelp_dataset_path = '../../datasets/yelp/'
 yelp_chi_path = 'YelpChi/'
 yelp_nyc_path = 'YelpNYC/'
 yelp_zip_path = 'YelpZip/'
@@ -146,18 +146,23 @@ def get_chi_hotel_review_score_list():
     chi_yelp_reviews = chi_hotel_yelp_reviews + chi_restaurant_yelp_reviews
     reviews = []
     scores  = []
+    length_of_reviews = []
     
     for yelp_review in chi_yelp_reviews:
         reviews.append(yelp_review.text)
-        
+        length_of_reviews.append(len(yelp_review.text))
+
         if yelp_review.metadata.label == 'd':
             scores.append(0)
         else:
             scores.append(1)
         
 #        scores.append(yelp_review.metadata.label)
-    return reviews, scores
-    
+    return reviews, scores, length_of_reviews
+
+
+def parse_yelp_reviews() -> ([str], [str], [int]):
+    return get_chi_hotel_review_score_list()
 
 #if __name__ == '__main__':
 ##    chi_hotel_yelp_reviews, chi_hotel_scores = get_review_score_list_representation(chi_hotel_yelp_reviews)
