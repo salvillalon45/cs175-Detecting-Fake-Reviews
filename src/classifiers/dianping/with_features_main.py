@@ -1,22 +1,36 @@
 # --------------------------------------------------------------------------------------
 #
-# Name: src/dianping/no_features_main_bow.py
+# Name: src/dianping/with_features_main_bow.py
 # Description:
-# This file runs the classifiers for the dianping dataset with no features added
+# This file runs the classifiers for the dianping dataset with extra features added
 #
 # --------------------------------------------------------------------------------------
 import functions
 import classification
+import chinese as dianping
 
 
 if __name__ == '__main__':
     print('Running Classifiers for dianping dataset')
-    print("Does not include extra features")
+    print("Does include features")
     print("Using Bag of Words")
     print('------------------------------------------')
 
-    reviews, scores, length_of_reviews = functions.create_reviews_scores_arrays()
-    X, vectorizer = functions.create_bow_from_reviews(reviews, scores)
+    stop = dianping.gather_stopwords()
+    labels, reviews = dianping.read_chinese()
+
+    BOW, vec = dianping.chinese_BOW(reviews, stop)
+
+    # Adding length of a each review feature
+    print("After adding length review feature")
+    X = functions.add_length_review_feature(X, length_of_reviews)
+    print(X)
+
+    # Adding Part of Speech Tag Feature
+    print("After adding Part of Speech Tag feature")
+    prp_list = functions.create_pos_features(reviews)
+    X = functions.add_pos_feature(X, prp_list)
+    print(X)
 
     # Logistic Regression
     # --------------------------------------------
