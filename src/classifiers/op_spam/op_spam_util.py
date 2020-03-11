@@ -1,6 +1,6 @@
 # --------------------------------------------------------------------------------------
 #
-# Name: src/op_spam/functions.py
+# Name: src/op_spam/op_spam_util.py
 # Description:
 # This file has the utility functions needed to add more features and parse the data
 #
@@ -12,10 +12,11 @@ from sklearn import metrics
 import numpy as np
 
 
-
-def create_reviews_scores_arrays():
-    # This function uses the op_spam dataset and extracts the reviews and the flag from the file name
-    # This is needed so that we can do vectorization. We plan on using CountVectorization
+def parse_op_spam():
+    """
+    This function uses the op_spam dataset and extracts the reviews, flag (d or t), and length of each review from the file name
+    """
+    print("Inside parse_op_spam()")
 
     reviews = list()
     scores = list()
@@ -23,9 +24,9 @@ def create_reviews_scores_arrays():
 
     # negative_polarity directory
     # ---------------------------------------------------------
-    files_in_directory_negative_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
-    file_path_negative_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/"
-
+    files_in_directory_negative_polarity = os.listdir("../../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
+    file_path_negative_polarity = "../../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/"
+    # src / classifiers / op_spam / op_spam_util.py
     # Loop over the files in negative_polarity directory
     # Open the file line by line
     for file_name in files_in_directory_negative_polarity:
@@ -45,8 +46,8 @@ def create_reviews_scores_arrays():
 
     # positive_polarity directory
     # ---------------------------------------------------------
-    files_in_directory_positive_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/")
-    file_path_positive_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/"
+    files_in_directory_positive_polarity = os.listdir("../../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/")
+    file_path_positive_polarity = "../../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/"
 
     # Loop over the files in positive_polarity directory
     # Open the file line by line
@@ -68,20 +69,29 @@ def create_reviews_scores_arrays():
     return reviews, scores, length_of_reviews
 
 
-def create_bow_from_reviews(reviews, scores):
+def create_bow_from_reviews(reviews):
+    """
+    Creating a bag of words by counting the number of times each word appears in a document.
+    This is possible using CountVectorizer
+    """
     print("Inside create_bow_from_reviews()")
 
-    # Creating a bag of words by counting the number of times each word appears in a document.
-    # This is possible using CountVectorizer
     vectorizer = CountVectorizer(ngram_range=(1,2), stop_words="english", min_df=0.01)
 
     # create a sparse BOW array from 'text' using vectorizer
     X = vectorizer.fit_transform(reviews)
-    print(X)
+
     return X, vectorizer
 
 
 def create_pos_features(reviews):
+    """
+    This function creates a frequencey list of PRP tags for each review.
+    PRP means personal pronoun. It is said that Fake reviews usually use PRP a lot.
+    This includes words like Me or I
+    """
+    print("Inside create_pos_features()")
+
     prp_list = list()
 
     for review in reviews:
@@ -97,12 +107,13 @@ def create_pos_features(reviews):
 
         prp_list.append(prp_count)
 
-    print("Reviews Len:: ", len(reviews))
-    print("Prp list Len:: ", len(prp_list))
     return prp_list
 
 
 def add_length_review_feature(X, length_of_reviews):
+    """
+    This function adds the length of each review to the vector of each review
+    """
     print("Inside add_length_review_feature()")
 
     rows = X.shape[0]
@@ -122,6 +133,9 @@ def add_length_review_feature(X, length_of_reviews):
 
 
 def add_pos_feature(X, prp_list):
+    """
+    This function adds the PRP frequency to the vector of each review
+    """
     print("Inside add_pos_feature()")
 
     rows = X.shape[0]
@@ -141,6 +155,9 @@ def add_pos_feature(X, prp_list):
 
 
 def train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train):
+    """
+    This function calculates the accuracy and AUC value for training data
+    """
     train_predictions = classifier.predict(X_train)
     train_accuracy = metrics.accuracy_score(Y_train, train_predictions)
 
@@ -153,13 +170,17 @@ def train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train,
 
 
 def train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test):
-    print("\nTesting: ")
+    """
+    This function calculates the accuracy and AUC value for training data
+    """
     test_predictions = classifier.predict(X_test)
     test_accuracy = metrics.accuracy_score(Y_test, test_predictions)
-    print(" Accuracy: ", format(100 * test_accuracy, ".2f"))
 
     class_probabilities = classifier.predict_proba(X_test)
     test_auc_score = metrics.roc_auc_score(Y_test, class_probabilities[:, 1])
+
+    print("\nTesting: ")
+    print(" Accuracy: ", format(100 * test_accuracy, ".2f"))
     print(" AUC Values: ", format(100 * test_auc_score, ".2f"))
 
 
@@ -180,8 +201,3 @@ def most_significant_terms(classifier, vectorizer, K):
     print('Top K negative weight words:')
     for w in topK_neg_weights:
         print('%s : %.4f' % (word_list[w],classifier.coef_[0][w]))
-
-# if __name__ == '__main__':
-#     reviews, scores = create_reviews_scores_arrays()
-#     print(reviews)
-#     print(scores)

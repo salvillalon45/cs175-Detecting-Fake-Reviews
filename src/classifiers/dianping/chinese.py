@@ -1,11 +1,10 @@
 # Module to use chinese data
-import csv
 from nltk.tokenize.stanford_segmenter import StanfordSegmenter
-import os, sys
+import os
+import sys
 sys.path.append('../op_spam')
-import functions
 from sklearn.feature_extraction.text import CountVectorizer
-import classification
+
 
 def gather_stopwords():
     print('Gathering stop words')
@@ -17,6 +16,7 @@ def gather_stopwords():
         stop_words.append(line)
     print(stop_words)
     return stop_words
+
 
 def read_chinese():
     print('Reading Chinese')
@@ -71,7 +71,6 @@ def read_chinese():
     return labels, reviews
 
 
-
 def segment(labels, reviews):
 
     segmented = []
@@ -100,9 +99,8 @@ def segment(labels, reviews):
         #     break
         print('Count: ', count)
 
-
-    
     return(segmented)
+
 
 def chinese_BOW(reviews, stop):
     # vectorizer = CountVectorizer(ngram_range=(1,2), stop_words="english", min_df=0.01)
@@ -112,37 +110,30 @@ def chinese_BOW(reviews, stop):
     X = vectorizer.fit_transform(reviews)
     return X, vectorizer
 
+def train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train):
+    """
+    This function calculates the accuracy and AUC value for training data
+    """
+    train_predictions = classifier.predict(X_train)
+    train_accuracy = metrics.accuracy_score(Y_train, train_predictions)
 
+    class_probabilities_train = classifier.predict_proba(X_train)
+    train_auc_score = metrics.roc_auc_score(Y_train, class_probabilities_train[:, 1])
 
-if __name__ == '__main__':
-    # print('Gathering stopwords')
-    stop = gather_stopwords()
-    labels, reviews = read_chinese()
-    # print('labels: ', labels)
-    # print('len label: ', len(labels))
-    # print('reviews: ', reviews)
-    # print('len reviews: ', len(reviews))
-    # # print(labels,reviews)
-    # # print(reviews)
-    BOW, vec = chinese_BOW(reviews, stop)
-    # # print('len bow: ', BOW.shape)
-    # # print('BOW: ')
-    # # print(BOW)
-    # # print('BOW to array: ')
-    # # print(BOW.toarray())
-    # # print('shape: ')
-    # # print(BOW.shape)
-    # # print('get feature names')
-    # # print(vec.get_feature_names())
-    # # print('get params')
-    # # print(vec.get_params())
-    # # print('get stop words')
-    # # print(vec.get_stop_words())
-    classification.naive_bayes(BOW,labels)
-    logistic = classification.logistic_regression(BOW,labels)
-    classification.knearest_neighbors(BOW,labels)
-    classification.decision_trees(BOW,labels)
-    classification.random_forest(BOW,labels)
+    print("Training: ")
+    print(" Accuracy: ", format(100 * train_accuracy, ".2f"))
+    print(" AUC Value: ", format(100 * train_auc_score, ".2f"))
 
-    functions.most_significant_terms(logistic, vec, 10)
+def train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test):
+    """
+    This function calculates the accuracy and AUC value for training data
+    """
+    test_predictions = classifier.predict(X_test)
+    test_accuracy = metrics.accuracy_score(Y_test, test_predictions)
 
+    class_probabilities = classifier.predict_proba(X_test)
+    test_auc_score = metrics.roc_auc_score(Y_test, class_probabilities[:, 1])
+
+    print("\nTesting: ")
+    print(" Accuracy: ", format(100 * test_accuracy, ".2f"))
+    print(" AUC Values: ", format(100 * test_auc_score, ".2f"))
