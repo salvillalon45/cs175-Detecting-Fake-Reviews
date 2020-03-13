@@ -1,11 +1,16 @@
-from sklearn import linear_model
+# ---------------------------------------------------------------------------------------
+#
+# Name: src/embeddings.py
+# Authors: Brandon Teran
+# Description: This script provides utility functions to create a corpus from the
+#   reviews in the form of [TaggedDocument]. It also provides functions to create, train
+#   and get a Doc2Vec embedding of said corpus.
+#
+# ---------------------------------------------------------------------------------------
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot
-from classification import logisticRegression
-from collections import defaultdict
-import functions
 import numpy as np
 import gensim
 from gensim.models import Doc2Vec
@@ -13,6 +18,11 @@ from nltk.corpus import stopwords
 
 
 def get_corpus(reviews: [str], scores: [int]):
+    '''
+    Iterate over the reviews and corresponding scores and create a TaggedDocument
+    object for each pair. These TaggedDocument objects make it easier to create Training
+    and Testing matrices.
+    '''
     stoplist = stopwords.words('english')
     review_tokens = []
     for review in reviews:
@@ -21,37 +31,17 @@ def get_corpus(reviews: [str], scores: [int]):
         yield gensim.models.doc2vec.TaggedDocument(text, [scores[i]])
 
 
-def createDoc2VecModel(reviews: [str], scores: [int]):
-    corpus = list(get_corpus(reviews, scores))[:20000]
-    train_corpus, test_corpus = train_test_split(corpus, test_size=0.25, random_state=42)
-    print(len(train_corpus))
+def add_unique_labels(train_regressors):
+    '''Go through the labels vector and give a unique ID to each label.'''
+    Y = np.asarray(train_regressors)
+    labelEncoder = preprocessing.LabelEncoder()
+    labelEncoder.fit(Y)
+    train_y = labelEncoder.transform(Y)
+    return train_y
+
+
+def create_doc2vec_model(train_corpus):
     model = Doc2Vec(window=100, dm=1, vector_size=50, min_count=2)
     model.build_vocab(train_corpus)
     model.train(train_corpus, total_examples=model.corpus_count, epochs=model.epochs)
-
-    train_targets, train_regressors = zip(*[(doc.words, doc.tags[0]) for doc in train_corpus])
-    test_targets, test_regressors = zip(*[(doc.words, doc.tags[0]) for doc in test_corpus])
-
-    X = []
-    for i in range(len(train_targets)):
-        X.append(model.infer_vector(train_targets[i]))
-
-    train_x = np.asarray(X)
-    print(train_x.shape)
-
-    logreg = linear_model.LogisticRegression()
-    logreg.fit(train_x, train_y)
-
-    test_list = []
-    for i in range(len(test_targets)):
-        test_list.append(model.infer_vector(test_targets[i]))
-
-    test_x = np.asarray(test_list)
-    test_Y = np.asarray(test_regressors)
-    test_y = labelEncoder.transform(test_Y)
-
-    predictions = logreg.predict(test_x)
-    np.mean(test_y)
-
-    acc = sum(predictions == test_y) / len(test_y)
-    print(acc)
+    return model

@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     reviews, scores, length_of_reviews = op_spam.parse_op_spam()
     X, vectorizer = op_spam.create_bow_from_reviews(reviews)
-
+    
     # Adding length of a each review feature
     print("Adding length review feature")
     X = op_spam.add_length_review_feature(X, length_of_reviews)
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     X = op_spam.add_pos_feature(X, prp_list)
     print(X)
 
-    # Logistic Regression
+    # Logistic Regressio/
     # --------------------------------------------
     classifier = classification.logistic_regression(X, scores)
 

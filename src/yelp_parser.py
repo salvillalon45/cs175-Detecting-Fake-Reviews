@@ -1,3 +1,11 @@
+# ---------------------------------------------------------------------------------------
+#
+# Name: src/yelp_parser.py
+# Authors: Brandon Teran
+# Description: This script parses the Yelp Review Dataset. It offers an functions that
+#   allow to retrieve the reviews, scores and length of each reveiw in array format.
+#
+# ---------------------------------------------------------------------------------------
 import os
 import nltk
 from nltk import word_tokenize
@@ -19,14 +27,14 @@ import matplotlib.pyplot as plt
 DEBUG = False
 
 
-yelp_dataset_path = '../../datasets/yelp/'
+yelp_dataset_path = '../datasets/yelp/'
 yelp_chi_path = 'YelpChi/'
 yelp_nyc_path = 'YelpNYC/'
 yelp_zip_path = 'YelpZip/'
 
 
 
-# Simple class to store metadata information
+'''Simple class to store metadata information'''
 class YelpMetadata:
     def __init__(self, date, review_id, reviewer_id, product_id, label):
         self.date        = date
@@ -36,13 +44,11 @@ class YelpMetadata:
         self.label       = 'd' if label == 'Y' else 't'
 
 
-# Simple class that serves as a wrapper for metadata and raw review text
+'''Simple class that serves as a wrapper for metadata and raw review text'''
 class YelpReview:
     def __init__(self, text: str, metadata: YelpMetadata):
         self.text = text
         self.metadata = metadata
-
-
 
 
 def get_yelp_chi_hotel_reviews():
@@ -53,7 +59,7 @@ def get_yelp_chi_hotel_reviews():
     metadata_file_path = yelp_dataset_path + yelp_chi_path + 'output_meta_yelpHotelData_NRYRcleaned.txt'
     reviews_file_path  = yelp_dataset_path + yelp_chi_path + 'output_review_yelpHotelData_NRYRcleaned.txt'
 
-    # Read metadata and fill hotelMetadataList with YelpMetadata objects
+    '''Read metadata and fill hotelMetadataList with YelpMetadata objects'''
     with open(metadata_file_path) as metadata_file:
         line = metadata_file.readline()
         while line:
@@ -99,7 +105,7 @@ def get_yelp_chi_restaurant_reviews():
     metadata_file_path = yelp_dataset_path + yelp_chi_path + 'output_meta_yelpResData_NRYRcleaned.txt'
     reviews_file_path  = yelp_dataset_path + yelp_chi_path + 'output_review_yelpResData_NRYRcleaned.txt'
 
-    # Read metadata and fill restaurantMetadataList with YelpMetadata objects
+    '''Read metadata and fill restaurantMetadataList with YelpMetadata objects'''
     with open(metadata_file_path) as metadata_file:
         line = metadata_file.readline()
         while line:
@@ -141,13 +147,13 @@ def get_yelp_nyc_reviews():
 
 
 def get_chi_hotel_review_score_list():
-    chi_hotel_yelp_reviews = get_yelp_chi_hotel_reviews()
+    chi_hotel_yelp_reviews      = get_yelp_chi_hotel_reviews()
     chi_restaurant_yelp_reviews = get_yelp_chi_restaurant_reviews()
     chi_yelp_reviews = chi_hotel_yelp_reviews + chi_restaurant_yelp_reviews
     reviews = []
     scores  = []
     length_of_reviews = []
-    
+
     for yelp_review in chi_yelp_reviews:
         reviews.append(yelp_review.text)
         length_of_reviews.append(len(yelp_review.text))
@@ -156,19 +162,9 @@ def get_chi_hotel_review_score_list():
             scores.append(0)
         else:
             scores.append(1)
-        
-#        scores.append(yelp_review.metadata.label)
+
     return reviews, scores, length_of_reviews
 
 
 def parse_yelp_reviews() -> ([str], [str], [int]):
     return get_chi_hotel_review_score_list()
-
-#if __name__ == '__main__':
-##    chi_hotel_yelp_reviews, chi_hotel_scores = get_review_score_list_representation(chi_hotel_yelp_reviews)
-##
-##    print(chi_hotel_yelp_reviews)
-##    print(chi_hotel_scores)
-#    #print(chi_hotel_reviews)
-#    #print(chi_restaurant_reviews)
-    
