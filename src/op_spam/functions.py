@@ -11,6 +11,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn import metrics
 import numpy as np
 
+import classification
 
 
 def create_reviews_scores_arrays():
@@ -23,13 +24,17 @@ def create_reviews_scores_arrays():
 
     # negative_polarity directory
     # ---------------------------------------------------------
-    files_in_directory_negative_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
-    file_path_negative_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/"
+    # files_in_directory_negative_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
+    # file_path_negative_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/"
+
+    files_in_directory_negative_polarity = os.listdir("../../datasets/op_spam_v1.4/negative_polarity/")
+    file_path_negative_polarity = "../../datasets/op_spam_v1.4/negative_polarity/"
 
     # Loop over the files in negative_polarity directory
     # Open the file line by line
     for file_name in files_in_directory_negative_polarity:
 
+        print('file_name: ', file_name)
         file_flag = file_name[0]
         file_path = file_path_negative_polarity + file_name
         file_open = open(file_path)
@@ -45,8 +50,11 @@ def create_reviews_scores_arrays():
 
     # positive_polarity directory
     # ---------------------------------------------------------
-    files_in_directory_positive_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/")
-    file_path_positive_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/"
+    # files_in_directory_positive_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/")
+    # file_path_positive_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/"
+
+    files_in_directory_positive_polarity = os.listdir("../../datasets/op_spam_v1.4/positive_polarity/")
+    file_path_positive_polarity = "../../datasets/op_spam_v1.4/positive_polarity/"
 
     # Loop over the files in positive_polarity directory
     # Open the file line by line
@@ -55,6 +63,7 @@ def create_reviews_scores_arrays():
         file_flag = file_name[0]
         file_path = file_path_positive_polarity + file_name
         file_open = open(file_path)
+        print('file_name: ', file_name)
         review = file_open.readline()
 
         if file_flag == "d":
@@ -68,7 +77,7 @@ def create_reviews_scores_arrays():
     return reviews, scores, length_of_reviews
 
 
-def create_bow_from_reviews(reviews, scores):
+def create_bow_from_reviews(reviews):
     print("Inside create_bow_from_reviews()")
 
     # Creating a bag of words by counting the number of times each word appears in a document.
@@ -162,6 +171,13 @@ def train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y
     test_auc_score = metrics.roc_auc_score(Y_test, class_probabilities[:, 1])
     print(" AUC Values: ", format(100 * test_auc_score, ".2f"))
 
+def confusion_matrix(classifier, X_test, Y_test):
+    print("\nConfusion Matrix: ")
+    test_predictions = classifier.predict(X_test)
+    arr = metrics.confusion_matrix(Y_test, test_predictions)
+    print('CONFUSION Matrix')
+    print(arr)
+
 
 def most_significant_terms(classifier, vectorizer, K):
     topK_pos_weights = classifier.coef_[0].argsort()[-K:][::-1]
@@ -181,7 +197,14 @@ def most_significant_terms(classifier, vectorizer, K):
     for w in topK_neg_weights:
         print('%s : %.4f' % (word_list[w],classifier.coef_[0][w]))
 
-# if __name__ == '__main__':
-#     reviews, scores = create_reviews_scores_arrays()
-#     print(reviews)
-#     print(scores)
+if __name__ == '__main__':
+    reviews, scores, len = create_reviews_scores_arrays()
+    # print(reviews)
+    # print(scores)
+    bow, vec = create_bow_from_reviews(reviews)
+    classification.logistic_regression(bow, scores)
+    classification.naive_bayes(bow, scores)
+    classification.knearest_neighbors(bow, scores)
+    classification.decision_trees(bow, scores)
+    classification.random_forest(bow, scores)
+

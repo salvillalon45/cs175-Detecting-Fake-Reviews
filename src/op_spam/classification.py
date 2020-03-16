@@ -25,6 +25,7 @@ def logistic_regression(X, Y, test_fraction=0.25):
 
     functions.train_classifier_and_evaluate_accuracy_on_training_data(classifier, X_train, Y_train)
     functions.train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y_test)
+    functions.confusion_matrix(classifier, X_test, Y_test)
 
     return classifier
 

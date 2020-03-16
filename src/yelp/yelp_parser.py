@@ -18,11 +18,17 @@ import matplotlib.pyplot as plt
 
 DEBUG = False
 
+import sys
 
-yelp_dataset_path = '../datasets/yelp/'
+sys.path.append('../op_spam')
+
+yelp_dataset_path = '../../datasets/yelp/'
 yelp_chi_path = 'YelpChi/'
 yelp_nyc_path = 'YelpNYC/'
 yelp_zip_path = 'YelpZip/'
+
+import functions
+import classification
 
 
 
@@ -46,6 +52,7 @@ class YelpReview:
 
 
 def get_yelp_chi_hotel_reviews():
+    print('INSIDE HOTEL')
     hotel_data        = []
     hotelMetadataList = []
     hotelReviewsList  = []
@@ -92,6 +99,7 @@ def get_yelp_chi_hotel_reviews():
 
 
 def get_yelp_chi_restaurant_reviews():
+    print('INSIDE RESTAURANT')
     restaurant_data        = []
     restaurantMetadataList = []
     restaurantReviewsList  = []
@@ -141,6 +149,7 @@ def get_yelp_nyc_reviews():
 
 
 def get_chi_hotel_review_score_list():
+    print('INSIDE COMBINED')
     chi_hotel_yelp_reviews = get_yelp_chi_hotel_reviews()
     chi_restaurant_yelp_reviews = get_yelp_chi_restaurant_reviews()
     chi_yelp_reviews = chi_hotel_yelp_reviews + chi_restaurant_yelp_reviews
@@ -149,7 +158,7 @@ def get_chi_hotel_review_score_list():
     
     for yelp_review in chi_yelp_reviews:
         reviews.append(yelp_review.text)
-        
+        # print('here')
         if yelp_review.metadata.label == 'd':
             scores.append(0)
         else:
@@ -159,11 +168,29 @@ def get_chi_hotel_review_score_list():
     return reviews, scores
     
 
-#if __name__ == '__main__':
+if __name__ == '__main__':
+
 ##    chi_hotel_yelp_reviews, chi_hotel_scores = get_review_score_list_representation(chi_hotel_yelp_reviews)
 ##
 ##    print(chi_hotel_yelp_reviews)
 ##    print(chi_hotel_scores)
 #    #print(chi_hotel_reviews)
 #    #print(chi_restaurant_reviews)
+    print('running program')
+    reviews, scores = get_chi_hotel_review_score_list()
+    reviews, vec = functions.create_bow_from_reviews(reviews, scores)
+    # print(len(reviews))
+    # print(len(scores))
+    # print(reviews)
+    # print(scores)
+    # classification.naive_bayes(reviews,scores)
+    logistic = classification.logistic_regression(reviews,scores)
+    # classification.knearest_neighbors(reviews,scores)
+    # classification.decision_trees(reviews,scores)
+    # classification.random_forest(reviews,scores)
+
+
+    # functions.most_significant_terms(logistic, vec, 10)
+
+
     
