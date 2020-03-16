@@ -138,11 +138,12 @@ if __name__ == '__main__':
     # # print(vec.get_params())
     # # print('get stop words')
     # # print(vec.get_stop_words())
-    classification.naive_bayes(BOW,labels)
+
     logistic = classification.logistic_regression(BOW,labels)
+    classification.naive_bayes(BOW, labels)
     classification.knearest_neighbors(BOW,labels)
     classification.decision_trees(BOW,labels)
     classification.random_forest(BOW,labels)
 
-    functions.most_significant_terms(logistic, vec, 10)
+    # functions.most_significant_terms(logistic, vec, 10)
 
