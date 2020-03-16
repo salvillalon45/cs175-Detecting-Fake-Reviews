@@ -1,11 +1,10 @@
 # Module to use chinese data
-import csv
 from nltk.tokenize.stanford_segmenter import StanfordSegmenter
-import os, sys
+import os
+import sys
 sys.path.append('../op_spam')
-import functions
 from sklearn.feature_extraction.text import CountVectorizer
-import classification
+
 
 def gather_stopwords():
     print('Gathering stop words')
@@ -17,6 +16,7 @@ def gather_stopwords():
         stop_words.append(line)
     print(stop_words)
     return stop_words
+
 
 def read_chinese():
     print('Reading Chinese')
@@ -64,7 +64,6 @@ def read_chinese():
     return labels, reviews
 
 
-
 def segment(labels, reviews):
     # save all segmented reviews to a file
     segmented = []
@@ -91,9 +90,8 @@ def segment(labels, reviews):
         #     break
         print('Count: ', count)
 
-
-    
     return(segmented)
+
 
 def chinese_BOW(reviews, stop):
     # vectorizer = CountVectorizer(ngram_range=(1,2), stop_words="english", min_df=0.01)
@@ -101,7 +99,6 @@ def chinese_BOW(reviews, stop):
     vectorizer = CountVectorizer(ngram_range=(1, 2), stop_words=stop, min_df=0.01) # create vectorizer
     X = vectorizer.fit_transform(reviews)
     return X, vectorizer
-
 
 
 if __name__ == '__main__':
@@ -114,5 +111,4 @@ if __name__ == '__main__':
     classification.knearest_neighbors(BOW,labels)
     classification.decision_trees(BOW,labels)
     classification.random_forest(BOW,labels)
-
 

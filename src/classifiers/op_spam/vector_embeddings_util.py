@@ -7,11 +7,15 @@
 # --------------------------------------------------------------------------------------
 import os
 import nltk
+import gensim
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn import metrics
+from sklearn.model_selection import train_test_split
+from sklearn import preprocessing
+from sklearn import linear_model
+from gensim.models import Doc2Vec
+from nltk.corpus import stopwords
 import numpy as np
-
-import classification
 
 
 def create_reviews_scores_arrays():
@@ -24,17 +28,14 @@ def create_reviews_scores_arrays():
 
     # negative_polarity directory
     # ---------------------------------------------------------
-    # files_in_directory_negative_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
-    # file_path_negative_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/"
-
-    files_in_directory_negative_polarity = os.listdir("../../datasets/op_spam_v1.4/negative_polarity/")
-    file_path_negative_polarity = "../../datasets/op_spam_v1.4/negative_polarity/"
+    files_in_directory_negative_polarity = os.listdir(
+        "../../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
+    file_path_negative_polarity = "../../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/"
 
     # Loop over the files in negative_polarity directory
     # Open the file line by line
     for file_name in files_in_directory_negative_polarity:
 
-        print('file_name: ', file_name)
         file_flag = file_name[0]
         file_path = file_path_negative_polarity + file_name
         file_open = open(file_path)
@@ -50,11 +51,8 @@ def create_reviews_scores_arrays():
 
     # positive_polarity directory
     # ---------------------------------------------------------
-    # files_in_directory_positive_polarity = os.listdir("../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/")
-    # file_path_positive_polarity = "../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/"
-
-    files_in_directory_positive_polarity = os.listdir("../../datasets/op_spam_v1.4/positive_polarity/")
-    file_path_positive_polarity = "../../datasets/op_spam_v1.4/positive_polarity/"
+    files_in_directory_positive_polarity = os.listdir("../../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/")
+    file_path_positive_polarity = "../../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/"
 
     # Loop over the files in positive_polarity directory
     # Open the file line by line
@@ -63,7 +61,6 @@ def create_reviews_scores_arrays():
         file_flag = file_name[0]
         file_path = file_path_positive_polarity + file_name
         file_open = open(file_path)
-        print('file_name: ', file_name)
         review = file_open.readline()
 
         if file_flag == "d":
@@ -77,7 +74,7 @@ def create_reviews_scores_arrays():
     return reviews, scores, length_of_reviews
 
 
-def create_bow_from_reviews(reviews):
+def create_bow_from_reviews(reviews, scores):
     print("Inside create_bow_from_reviews()")
 
     # Creating a bag of words by counting the number of times each word appears in a document.
@@ -171,40 +168,84 @@ def train_classifier_and_evaluate_accuracy_on_testing_data(classifier, X_test, Y
     test_auc_score = metrics.roc_auc_score(Y_test, class_probabilities[:, 1])
     print(" AUC Values: ", format(100 * test_auc_score, ".2f"))
 
-def confusion_matrix(classifier, X_test, Y_test):
-    print("\nConfusion Matrix: ")
-    test_predictions = classifier.predict(X_test)
-    arr = metrics.confusion_matrix(Y_test, test_predictions)
-    print('CONFUSION Matrix')
-    print(arr)
+
+def parse_op_spam_reviews():
+    return create_reviews_scores_arrays()
 
 
-def most_significant_terms(classifier, vectorizer, K):
-    topK_pos_weights = classifier.coef_[0].argsort()[-K:][::-1]
-    topK_neg_weights = classifier.coef_[0].argsort()[:K]
-    word_list = vectorizer.get_feature_names()
+def get_corpus(reviews, scores):
+    """
+    Convert each review into a `TaggedDocument`
+    """
+    stoplist = stopwords.words('english')
+    review_tokens = []
 
-    # cycle through the positive weights, in the order of largest weight first and print out
-    # K lines where each line contains
-    # (a) the term corresponding to the weight (a string)
-    # (b) the weight value itself (a scalar printed to 3 decimal places)
+    for review in reviews:
+        review_tokens.append([word for word in review.lower().split() if word not in stoplist])
 
-    print('Top K positive weight words:')
-    for w in topK_pos_weights:
-        print('%s : %.4f' % (word_list[w],classifier.coef_[0][w]))
+    for i, text in enumerate(review_tokens):
+        yield gensim.models.doc2vec.TaggedDocument(text, [scores[i]])
 
-    print('Top K negative weight words:')
-    for w in topK_neg_weights:
-        print('%s : %.4f' % (word_list[w],classifier.coef_[0][w]))
 
-if __name__ == '__main__':
-    reviews, scores, len = create_reviews_scores_arrays()
-    # print(reviews)
-    # print(scores)
-    bow, vec = create_bow_from_reviews(reviews)
-    classification.logistic_regression(bow, scores)
-    classification.naive_bayes(bow, scores)
-    classification.knearest_neighbors(bow, scores)
-    classification.decision_trees(bow, scores)
-    classification.random_forest(bow, scores)
+def train_model_from_corpus(reviews, scores):
+    """
+    Train Doc2Vec Model
+    """
+    print("Inside train_model_from_corpus()")
 
+    corpus = list(get_corpus(reviews, scores))[:20000]
+    train_corpus, test_corpus = train_test_split(corpus, test_size=0.25, random_state=42)
+
+    model = Doc2Vec(window=100, dm=1, vector_size=50, min_count=2)
+    model.build_vocab(train_corpus)
+    model.train(train_corpus, total_examples=model.corpus_count, epochs=model.epochs)
+
+    train_targets, train_regressors = zip(*[(doc.words, doc.tags[0]) for doc in train_corpus])
+    test_targets, test_regressors = zip(*[(doc.words, doc.tags[0]) for doc in test_corpus])
+
+    X = []
+    for i in range(len(train_targets)):
+        X.append(model.infer_vector(train_targets[i]))
+
+    train_x = np.asarray(X)
+
+    return model, train_targets, train_regressors, test_targets, test_regressors, train_x
+
+
+def add_unique_labels(train_regressors):
+    """
+    Add Unique Labels
+    """
+    Y = np.asarray(train_regressors)
+    label_encoder = preprocessing.LabelEncoder()
+    label_encoder.fit(Y)
+    train_y = label_encoder.transform(Y)
+
+    return train_y
+
+
+def get_prediction(review, model, train_targets, train_regressors, test_targets, test_regressors, train_x):
+    """
+    Get a prediction. We are using Logistic Regression for now
+    """
+    print("Inside get_prediction()")
+
+    Y = np.asarray(train_regressors)
+    label_encoder = preprocessing.LabelEncoder()
+    label_encoder.fit(Y)
+    train_y = label_encoder.transform(Y)
+
+    vector = model.infer_vector(review)
+    test_x = np.asarray([vector])
+    test_Y = np.asarray(test_regressors)
+    test_y = label_encoder.transform(test_Y)
+
+    # log_reg = linear_model.LogisticRegression()
+    # log_reg.fit(train_x, train_y)
+    #
+    # preds = log_reg.predict(test_x)
+    # print("Prediction is:: ", preds)
+    # np.mean(test_y)
+    #
+    # acc = sum(preds == test_y) / len(test_y)
+    # print("Accuracy:: ", acc)

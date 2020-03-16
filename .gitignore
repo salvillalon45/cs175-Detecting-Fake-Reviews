@@ -1,7 +1,7 @@
 /venv
-/src/datasets/dianping_chinese
-/src/datasets/op_spam_v1.4
-/src/datasets/yelp
+src/datasets/dianping_chinese
+src/datasets/op_spam_v1.4
+src/datasets/yelp
 /.idea
 /src/__pycache__
 src/op_spam/__pycache__/classification.cpython-37.pyc
