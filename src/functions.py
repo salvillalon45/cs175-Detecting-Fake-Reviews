@@ -14,6 +14,62 @@ from sklearn import metrics
 import numpy as np
 
 
+def parse_op_spam():
+    """
+    This function uses the op_spam dataset and extracts the reviews, flag (d or t), and length of each review from the file name
+    """
+    print("Inside parse_op_spam()")
+
+    reviews = list()
+    scores = list()
+    length_of_reviews = list()
+
+    # negative_polarity directory
+    # ---------------------------------------------------------
+    files_in_directory_negative_polarity = os.listdir("../../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/")
+    file_path_negative_polarity = "../../datasets/op_spam_v1.4/test_op_spam_v1.4/negative_polarity/"
+    # Loop over the files in negative_polarity directory
+    # Open the file line by line
+    for file_name in files_in_directory_negative_polarity:
+
+        file_flag = file_name[0]
+        file_path = file_path_negative_polarity + file_name
+        file_open = open(file_path)
+        review = file_open.readline()
+
+        if file_flag == "d":
+            scores.append(0)
+        else:
+            scores.append(1)
+
+        reviews.append(review)
+        length_of_reviews.append(len(review))
+
+    # positive_polarity directory
+    # ---------------------------------------------------------
+    files_in_directory_positive_polarity = os.listdir("../../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/")
+    file_path_positive_polarity = "../../datasets/op_spam_v1.4/test_op_spam_v1.4/positive_polarity/"
+
+    # Loop over the files in positive_polarity directory
+    # Open the file line by line
+    for file_name in files_in_directory_positive_polarity:
+
+        file_flag = file_name[0]
+        file_path = file_path_positive_polarity + file_name
+        file_open = open(file_path)
+        review = file_open.readline()
+
+        if file_flag == "d":
+            scores.append(0)
+        else:
+            scores.append(1)
+
+        reviews.append(review)
+        length_of_reviews.append(len(review))
+
+    return reviews, scores, length_of_reviews
+
+
 def create_bow_from_reviews(reviews):
     '''
     Creating a bag of words by counting the number of times each word appears in a document.

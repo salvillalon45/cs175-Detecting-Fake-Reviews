@@ -24,4 +24,12 @@
 /* Increase the width of the FabFlix Home Button */
 .review-input-button .form-button {
     width: 250px;
+    /*margin-bottom: 10px;*/
+}
+
+
+.result-box .result {
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: bold;
 }

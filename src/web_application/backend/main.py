@@ -5,8 +5,8 @@ import nltk
 
 app = Flask(__name__)
 
-# reviews, scores, length_of_reviews = functions.parse_opspam_reviews()
-reviews, scores = functions.parse_yelp_reviews()
+reviews, scores, length_of_reviews = functions.parse_opspam_reviews()
+# reviews, scores = functions.parse_yelp_reviews()
 model, train_targets, train_regressors, test_targets, test_regressors, train_x = functions.train_model_from_corpus(reviews, scores)
 
 
@@ -18,9 +18,9 @@ def test_review_endpoint():
     print("User Review:: ", review)
 
     review_tokens = nltk.word_tokenize(review)
-    functions.get_prediction(review_tokens, model, train_targets, train_regressors, test_targets, test_regressors, train_x)
+    prediction = functions.get_prediction(review_tokens, model, train_targets, train_regressors, test_targets, test_regressors, train_x)
 
-    return "hola"
+    return str(prediction)
 
 
 if __name__ == "__main__":

@@ -95,7 +95,6 @@ def train_model_from_corpus(reviews, scores):
 
     train_targets, train_regressors = zip(*[(doc.words, doc.tags[0]) for doc in train_corpus])
     test_targets, test_regressors = zip(*[(doc.words, doc.tags[0]) for doc in test_corpus])
-    print("What is train_targets:: ", type(train_targets[0]))
 
     X = []
     for i in range(len(train_targets)):
@@ -115,11 +114,7 @@ def get_prediction(review, model, train_targets, train_regressors, test_targets,
     train_y = label_encoder.transform(Y)
     np.mean(train_y)
 
-    print("Review Before:: what is review:: ", type(review))
-    # review = np.array(review).reshape(-1, 1)
-    print("Review after:: what is review:: ", review)
     vector = model.infer_vector(review)
-    print("what is vector:: ", vector)
     test_x = np.asarray([vector])
     test_Y = np.asarray(test_regressors)
     test_y = label_encoder.transform(test_Y)
@@ -133,3 +128,5 @@ def get_prediction(review, model, train_targets, train_regressors, test_targets,
 
     acc = sum(preds == test_y) / len(test_y)
     print("Accuracy:: ", acc)
+
+    return preds[0]
